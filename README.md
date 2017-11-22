@@ -20,7 +20,7 @@ Reflects the actual time it takes in micro seconds to execute the IO which may b
 End to end time it takes in micro seconds on from the kernel sending the IO request back to the ack back to the kernel considering all factors they may imact the execution time like 	throttleing, IO retries, path failure, etc. 
 
 ### io_latency^2
-latency ^2, used to calculate variance
+io_latency ^2, used to calculate variance
 
 ### worst_latency
 Highest/max latency
