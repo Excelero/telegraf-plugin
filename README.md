@@ -5,7 +5,7 @@ The Excelero NVMesh telegraf statistics collector plugin is integrated through a
 
 The current and initial version collects the following volume/device statistics from the NVMesh client Volumes:
 ### num_ops
-The number of IO requests from the kernel to the NVMesh volumes
+The number of IO requests from the kernel to the NVMesh volume
 
 ### size in_bytes
 Total size of all the ios in bytes. Size/num_ops will give you the average size of the io.  
@@ -30,3 +30,28 @@ Highest/max execution time
 
 ### worst_e2e
 Highest/max end to end time
+
+## Installation
+Move or copy the nvmesh_telegraf.py file to the /etc/opt/NVMesh/ folder on your NVMesh client server/host.
+Enable the execution bit on the script by using chmod +x to set the execution permission. 
+
+## Telegraf configuration
+If the Telegraf collector was not installed on your cleint server/host yet, please follow the download and install instruction they can be found here: https://portal.influxdata.com/downloads
+
+Edit the /etc/telegraf/telegraf.conf and make sure that the following is enabled/uncommented in the [[inputs.exec]] section:  
+  
+#Read metrics from one or more commands that can output to stdout  
+[[inputs.exec]]  
+#Commands array  
+commands = ["/opt/NVMesh/nvmesh_telegraf.py"]  
+#Timeout for each command to complete.  
+timeout = "5s"  
+#measurement name suffix (for separating different commands)  
+#name_suffix = "_measurement"  
+#Data format to consume.  
+#Each data format has its own unique set of configuration options, read  
+#more about them here:  
+#https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md  
+data_format = "influx"  
+
+Restart the telegraf service. Done.  
