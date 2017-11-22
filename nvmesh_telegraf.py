@@ -5,7 +5,7 @@
 # License:       GPL
 # Version:       0.1
 # Maintainer:    Andreas Krause
-# Email:         andreas@excelero.com"
+# Email:         andreas@excelero.com
 # Status:        Test
 
 import os
