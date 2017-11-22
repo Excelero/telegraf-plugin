@@ -2,7 +2,7 @@
 # Author:        Andreas Krause
 # Copyright 2017, Excelero
 # Credits:       Andreas Krause, Joe Harlan
-# License:       GPL
+# License:       LGPL3
 # Version:       0.1
 # Maintainer:    Andreas Krause
 # Email:         andreas@excelero.com
