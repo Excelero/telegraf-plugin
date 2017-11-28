@@ -2,10 +2,10 @@
 # Author:        Andreas Krause
 # Copyright 2017, Excelero
 # Credits:       Andreas Krause, Joe Harlan
-# License:       LGPL3
+# License:       GPL
 # Version:       0.1
 # Maintainer:    Andreas Krause
-# Email:         andreas@excelero.com
+# Email:         andreas@excelero.com"
 # Status:        Test
 
 import os
@@ -34,36 +34,36 @@ def collect():
                 telegraf_output_line = "nvmesh,volume=" + volume
 
                 num_ops = re.findall(REGEX_NUM_OPS, iostats)
-                telegraf_output_line += ' num_ops_read=' + num_ops[0][0]
-                telegraf_output_line += ',num_ops_write=' + num_ops[0][1]
+                telegraf_output_line += ' num_ops_read=' + num_ops[0][0].strip()
+                telegraf_output_line += ',num_ops_write=' + num_ops[0][1].strip()
 
                 size_in_bytes = re.findall(REGEX_SIZE_IN_BYTES, iostats)
-                telegraf_output_line += ',size_in_bytes_read=' + size_in_bytes[0][0]
-                telegraf_output_line += ',size_in_bytes_write=' + size_in_bytes[0][1]
+                telegraf_output_line += ',size_in_bytes_read=' + size_in_bytes[0][0].strip()
+                telegraf_output_line += ',size_in_bytes_write=' + size_in_bytes[0][1].strip()
 
                 total_execution = re.findall(REGEX_TOTAL_EXECUTION, iostats)
-                telegraf_output_line += ',total_execution_reads=' + total_execution[0][0]
-                telegraf_output_line += ',total_execution_writes=' + total_execution[0][1]
+                telegraf_output_line += ',total_execution_reads=' + total_execution[0][0].strip()
+                telegraf_output_line += ',total_execution_writes=' + total_execution[0][1].strip()
 
                 latency = re.findall(REGEX_LATENCY, iostats)
-                telegraf_output_line += ',latency_read=' + latency[0][0]
-                telegraf_output_line += ',latency_write=' + latency[0][1]
+                telegraf_output_line += ',latency_read=' + latency[0][0].strip()
+                telegraf_output_line += ',latency_write=' + latency[0][1].strip()
 
                 latency2 = re.findall(REGEX_LATENCY2, iostats)
-                telegraf_output_line += ',latency2_read=' + latency2[0][0]
-                telegraf_output_line += ',latency2_write=' + latency2[0][1]
+                telegraf_output_line += ',latency2_read=' + latency2[0][0].strip()
+                telegraf_output_line += ',latency2_write=' + latency2[0][1].strip()
 
                 worst_execution = re.findall(REGEX_WORST_EXECUTION, iostats)
-                telegraf_output_line += ',worst_execution_read=' + worst_execution[0][0]
-                telegraf_output_line += ',worst_execution_write=' + worst_execution[0][1]
+                telegraf_output_line += ',worst_execution_read=' + worst_execution[0][0].strip()
+                telegraf_output_line += ',worst_execution_write=' + worst_execution[0][1].strip()
 
                 worst_latency = re.findall(REGEX_WORST_LATENCY, iostats)
-                telegraf_output_line += ',worst_latency_read=' + worst_latency[0][0]
-                telegraf_output_line += ',worst_latency_write=' + worst_latency[0][1]
+                telegraf_output_line += ',worst_latency_read=' + worst_latency[0][0].strip()
+                telegraf_output_line += ',worst_latency_write=' + worst_latency[0][1].strip()
 
                 worst_e2e = re.findall(REGEX_WORST_e2e, iostats)
-                telegraf_output_line += ',worst_e2e_read=' + worst_e2e[0][0]
-                telegraf_output_line += ',worst_e2e_write=' + worst_e2e[0][1]
+                telegraf_output_line += ',worst_e2e_read=' + worst_e2e[0][0].strip()
+                telegraf_output_line += ',worst_e2e_write=' + worst_e2e[0][1].strip()
 
                 telegraf_line_protocol_output += telegraf_output_line + '\n'
 
@@ -71,6 +71,5 @@ def collect():
 
 
 if __name__ == "__main__":
-
 
     collect()
