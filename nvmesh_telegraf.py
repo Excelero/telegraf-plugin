@@ -12,14 +12,14 @@ import os
 import re
 
 VOLUMES_ROOT = '/proc/nvmeibc/volumes/'
-REGEX_NUM_OPS = r"num_ops\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_SIZE_IN_BYTES = r"size\s\S*\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_TOTAL_EXECUTION = r"total_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_LATENCY = r"latency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_LATENCY2 = r"latency\^2\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_WORST_EXECUTION = r"worst_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_WORST_LATENCY = r"worst_latency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_WORST_e2e = r"worst_e2e\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_NUM_OPS = r"\bnum_ops\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_SIZE_IN_BYTES = r"\bsize\s\[bytes]\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_TOTAL_EXECUTION = r"\btotal_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_LATENCY = r"\blatency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_LATENCY2 = r"\blatency\^2\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_WORST_EXECUTION = r"\bworst_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_WORST_LATENCY = r"\bworst_latency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_WORST_e2e = r"\bworst_e2e\s*\S\s*(\d*.\d)\s*(\d*.\d)"
 
 
 def collect():
