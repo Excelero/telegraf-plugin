@@ -12,18 +12,25 @@ import os
 import re
 
 VOLUMES_ROOT = '/proc/nvmeibc/volumes/'
-REGEX_NUM_OPS = r"\bnum_ops\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_SIZE_IN_BYTES = r"\bsize\s\[bytes]\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_TOTAL_EXECUTION = r"\btotal_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_LATENCY = r"\blatency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_LATENCY2 = r"\blatency\^2\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_WORST_EXECUTION = r"\bworst_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_WORST_LATENCY = r"\bworst_latency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_WORST_e2e = r"\bworst_e2e\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+DISK_ROOT = '/proc/nvmeibc/disks/'
+REGEX_VOL_NUM_OPS = r"\bnum_ops\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_VOL_SIZE_IN_BYTES = r"\bsize\s\[bytes]\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_VOL_TOTAL_EXECUTION = r"\btotal_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_VOL_LATENCY = r"\blatency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_VOL_LATENCY2 = r"\blatency\^2\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_VOL_WORST_EXECUTION = r"\bworst_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_VOL_WORST_LATENCY = r"\bworst_latency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_VOL_WORST_e2e = r"\bworst_e2e\s*\S\s*(\d*.\d)\s*(\d*.\d)"
+REGEX_DISK_READ_OPS = r"\bread_ops=(\d*.\d)"
+REGEX_DISK_READ_SIZE = r"\bread_size=(\d*.\d)"
+REGEX_DISK_READ_LATENCY = r"\bread_latency=(\d*.\d)"
+REGEX_DISK_WRITE_OPS = r"\bwrite_ops=(\d*.\d)"
+REGEX_DISK_WRITE_SIZE = r"\bwrite_size=(\d*.\d)"
+REGEX_DISK_WRITE_LATENCY = r"\bwrite_latency=(\d*.\d)"
 
 
-def collect():
-    telegraf_line_protocol_output = ''
+def collect_volume_stats():
+    telegraf_line_protocol_output = ""
 
     for _,dirs,_ in os.walk(VOLUMES_ROOT):
 
@@ -33,43 +40,77 @@ def collect():
                 iostats = file_object.read()
                 telegraf_output_line = "nvmesh,volume=" + volume
 
-                num_ops = re.findall(REGEX_NUM_OPS, iostats)
+                num_ops = re.findall(REGEX_VOL_NUM_OPS, iostats)
                 telegraf_output_line += ' num_ops_read=' + num_ops[0][0].strip()
                 telegraf_output_line += ',num_ops_write=' + num_ops[0][1].strip()
 
-                size_in_bytes = re.findall(REGEX_SIZE_IN_BYTES, iostats)
+                size_in_bytes = re.findall(REGEX_VOL_SIZE_IN_BYTES, iostats)
                 telegraf_output_line += ',size_in_bytes_read=' + size_in_bytes[0][0].strip()
                 telegraf_output_line += ',size_in_bytes_write=' + size_in_bytes[0][1].strip()
 
-                total_execution = re.findall(REGEX_TOTAL_EXECUTION, iostats)
+                total_execution = re.findall(REGEX_VOL_TOTAL_EXECUTION, iostats)
                 telegraf_output_line += ',total_execution_reads=' + total_execution[0][0].strip()
                 telegraf_output_line += ',total_execution_writes=' + total_execution[0][1].strip()
 
-                latency = re.findall(REGEX_LATENCY, iostats)
+                latency = re.findall(REGEX_VOL_LATENCY, iostats)
                 telegraf_output_line += ',latency_read=' + latency[0][0].strip()
                 telegraf_output_line += ',latency_write=' + latency[0][1].strip()
 
-                latency2 = re.findall(REGEX_LATENCY2, iostats)
+                latency2 = re.findall(REGEX_VOL_LATENCY2, iostats)
                 telegraf_output_line += ',latency2_read=' + latency2[0][0].strip()
                 telegraf_output_line += ',latency2_write=' + latency2[0][1].strip()
 
-                worst_execution = re.findall(REGEX_WORST_EXECUTION, iostats)
+                worst_execution = re.findall(REGEX_VOL_WORST_EXECUTION, iostats)
                 telegraf_output_line += ',worst_execution_read=' + worst_execution[0][0].strip()
                 telegraf_output_line += ',worst_execution_write=' + worst_execution[0][1].strip()
 
-                worst_latency = re.findall(REGEX_WORST_LATENCY, iostats)
+                worst_latency = re.findall(REGEX_VOL_WORST_LATENCY, iostats)
                 telegraf_output_line += ',worst_latency_read=' + worst_latency[0][0].strip()
                 telegraf_output_line += ',worst_latency_write=' + worst_latency[0][1].strip()
 
-                worst_e2e = re.findall(REGEX_WORST_e2e, iostats)
+                worst_e2e = re.findall(REGEX_VOL_WORST_e2e, iostats)
                 telegraf_output_line += ',worst_e2e_read=' + worst_e2e[0][0].strip()
                 telegraf_output_line += ',worst_e2e_write=' + worst_e2e[0][1].strip()
 
                 telegraf_line_protocol_output += telegraf_output_line + '\n'
 
-    print(telegraf_line_protocol_output)
+    return telegraf_line_protocol_output
+
+
+def collect_disk_stats():
+    telegraf_line_protocol_output = ""
+
+    for _, dirs, _ in os.walk(DISK_ROOT):
+
+        for disk in dirs:
+            with open(DISK_ROOT + disk + '/stats', 'r') as file_object:
+                stats = file_object.read()
+                telegraf_output_line = "nvmesh,disk=" + disk
+
+                disk_reads = re.findall(REGEX_DISK_READ_OPS, stats)
+                telegraf_output_line += ' disk_reads=' + disk_reads[0].strip()
+
+                disk_writes = re.findall(REGEX_DISK_WRITE_OPS, stats)
+                telegraf_output_line += ',disk_writes=' + disk_writes[0].strip()
+
+                read_in_bytes = re.findall(REGEX_DISK_READ_SIZE, stats)
+                telegraf_output_line += ',disk_read_in_bytes=' + read_in_bytes[0].strip()
+
+                write_in_bytes = re.findall(REGEX_DISK_WRITE_SIZE, stats)
+                telegraf_output_line += ',disk_write_in_bytes=' + write_in_bytes[0].strip()
+
+                latency_read = re.findall(REGEX_DISK_READ_LATENCY, stats)
+                telegraf_output_line += ',disk_read_latency=' + latency_read[0].strip()
+
+                latency_write = re.findall(REGEX_DISK_WRITE_LATENCY, stats)
+                telegraf_output_line += ',disk_write_latency=' + latency_write[0].strip()
+
+                telegraf_line_protocol_output += telegraf_output_line + '\n'
+
+    return telegraf_line_protocol_output
 
 
 if __name__ == "__main__":
 
-    collect()
+    print(collect_volume_stats()).strip('\n')
+    print(collect_disk_stats())
