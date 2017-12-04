@@ -3,7 +3,7 @@
 # Copyright 2017, Excelero
 # Credits:       Andreas Krause, Joe Harlan
 # License:       GPL
-# Version:       0.1
+# Version:       0.2
 # Maintainer:    Andreas Krause
 # Email:         andreas@excelero.com"
 # Status:        Test
@@ -13,20 +13,15 @@ import re
 
 VOLUMES_ROOT = '/proc/nvmeibc/volumes/'
 DISK_ROOT = '/proc/nvmeibc/disks/'
-REGEX_VOL_NUM_OPS = r"\bnum_ops\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_VOL_SIZE_IN_BYTES = r"\bsize\s\[bytes]\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_VOL_TOTAL_EXECUTION = r"\btotal_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_VOL_LATENCY = r"\blatency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_VOL_LATENCY2 = r"\blatency\^2\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_VOL_WORST_EXECUTION = r"\bworst_execution\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_VOL_WORST_LATENCY = r"\bworst_latency\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_VOL_WORST_e2e = r"\bworst_e2e\s*\S\s*(\d*.\d)\s*(\d*.\d)"
-REGEX_DISK_READ_OPS = r"\bread_ops=(\d*.\d)"
-REGEX_DISK_READ_SIZE = r"\bread_size=(\d*.\d)"
-REGEX_DISK_READ_LATENCY = r"\bread_latency=(\d*.\d)"
-REGEX_DISK_WRITE_OPS = r"\bwrite_ops=(\d*.\d)"
-REGEX_DISK_WRITE_SIZE = r"\bwrite_size=(\d*.\d)"
-REGEX_DISK_WRITE_LATENCY = r"\bwrite_latency=(\d*.\d)"
+REGEX_VOL_NUM_OPS = r"\bnum_ops\s*\S\s*(\d*.\d*)\s*(\d*.\d*)"
+REGEX_VOL_SIZE_IN_BYTES = r"\bsize\s\[bytes]\s*\S\s*(\d*.\d*)\s*(\d*.\d*)"
+REGEX_VOL_LATENCY = r"\blatency\s*\S\s*(\d*.\d*)\s*(\d*.\d*)"
+REGEX_DISK_READ_OPS = r"\bread_ops=(\d*.\d*)"
+REGEX_DISK_READ_SIZE = r"\bread_size=(\d*.\d*)"
+REGEX_DISK_READ_LATENCY = r"\bread_latency=(\d*.\d*)"
+REGEX_DISK_WRITE_OPS = r"\bwrite_ops=(\d*.\d*)"
+REGEX_DISK_WRITE_SIZE = r"\bwrite_size=(\d*.\d*)"
+REGEX_DISK_WRITE_LATENCY = r"\bwrite_latency=(\d*.\d*)"
 
 
 def collect_volume_stats():
@@ -48,29 +43,9 @@ def collect_volume_stats():
                 telegraf_output_line += ',size_in_bytes_read=' + size_in_bytes[0][0].strip()
                 telegraf_output_line += ',size_in_bytes_write=' + size_in_bytes[0][1].strip()
 
-                total_execution = re.findall(REGEX_VOL_TOTAL_EXECUTION, iostats)
-                telegraf_output_line += ',total_execution_reads=' + total_execution[0][0].strip()
-                telegraf_output_line += ',total_execution_writes=' + total_execution[0][1].strip()
-
                 latency = re.findall(REGEX_VOL_LATENCY, iostats)
                 telegraf_output_line += ',latency_read=' + latency[0][0].strip()
                 telegraf_output_line += ',latency_write=' + latency[0][1].strip()
-
-                latency2 = re.findall(REGEX_VOL_LATENCY2, iostats)
-                telegraf_output_line += ',latency2_read=' + latency2[0][0].strip()
-                telegraf_output_line += ',latency2_write=' + latency2[0][1].strip()
-
-                worst_execution = re.findall(REGEX_VOL_WORST_EXECUTION, iostats)
-                telegraf_output_line += ',worst_execution_read=' + worst_execution[0][0].strip()
-                telegraf_output_line += ',worst_execution_write=' + worst_execution[0][1].strip()
-
-                worst_latency = re.findall(REGEX_VOL_WORST_LATENCY, iostats)
-                telegraf_output_line += ',worst_latency_read=' + worst_latency[0][0].strip()
-                telegraf_output_line += ',worst_latency_write=' + worst_latency[0][1].strip()
-
-                worst_e2e = re.findall(REGEX_VOL_WORST_e2e, iostats)
-                telegraf_output_line += ',worst_e2e_read=' + worst_e2e[0][0].strip()
-                telegraf_output_line += ',worst_e2e_write=' + worst_e2e[0][1].strip()
 
                 telegraf_line_protocol_output += telegraf_output_line + '\n'
 
