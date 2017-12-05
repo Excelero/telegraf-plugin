@@ -87,5 +87,4 @@ def collect_disk_stats():
 
 if __name__ == "__main__":
 
-    print(collect_volume_stats()).strip('\n')
-    print(collect_disk_stats())
+    print ("%s%s") % (collect_volume_stats(), collect_disk_stats())
