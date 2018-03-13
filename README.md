@@ -55,3 +55,6 @@ timeout = "5s"
 data_format = "influx"  
 
 Restart the telegraf service. Done.  
+
+# Here you can find documentation and How To install and configure the whole Telegraf, Influxdb and Grafana stack on CentOS 7 as a comprehensive example and to get you started
+
