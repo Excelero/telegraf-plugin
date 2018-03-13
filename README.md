@@ -56,5 +56,5 @@ data_format = "influx"
 
 Restart the telegraf service. Done.  
 
-# Here you can find documentation and How To install and configure the whole Telegraf, Influxdb and Grafana stack on CentOS 7 as a comprehensive example and to get you started
-
+#### Here you can find documentation and How To install and configure the whole Telegraf, Influxdb and Grafana stack on CentOS 7 as a comprehensive example and to get you started
+#https://github.com/Excelero/telegraf-plugin/blob/master/Telegraf%2C%20InfluxDB%20%26%20Grafana%20Installation%2C%20Setup%20and%20Configuration%20to%20monitor%20NVMesh%20clients%20and%20targets%20on%20CentOS%207.pdf
