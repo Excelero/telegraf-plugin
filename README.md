@@ -43,7 +43,7 @@ Edit the /etc/telegraf/telegraf.conf and make sure that the following is enabled
 #Read metrics from one or more commands that can output to stdout  
 [[inputs.exec]]  
 #Commands array  
-commands = ["/opt/NVMesh/nvmesh_telegraf.py"]  
+commands = ["/etc/opt/NVMesh/nvmesh_telegraf.py"]  
 #Timeout for each command to complete.  
 timeout = "5s"  
 #measurement name suffix (for separating different commands)  
