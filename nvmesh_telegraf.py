@@ -26,9 +26,9 @@
 # and/or other materials provided with the distribution.
 #
 # Author:        Andreas Krause
-# Version:       in development
-# Maintainer:    Andreas Krause
-# Email:         andreas@excelero.com
+# Version:       1.3
+# Maintainer:    Doron Levi
+# Email:         doron.levi@excelero.com
 
 import os
 import re
@@ -36,8 +36,8 @@ import re
 VOLUMES_ROOT = '/proc/nvmeibc/volumes/'
 DISK_ROOT = '/proc/nvmeibc/disks/'
 REGEX_VOL_NUM_OPS = r"\bnum_ops\s*\S\s*(\d*.\d*)\s*(\d*.\d*)"
-REGEX_VOL_SIZE_IN_BYTES = r"\bsize\s\[bytes]\s*\S\s*(\d*.\d*)\s*(\d*.\d*)"
-REGEX_VOL_LATENCY = r"\blatency\s*\S\s*(\d*.\d*)\s*(\d*.\d*)"
+REGEX_VOL_SIZE_IN_BYTES = r"\bsize\s*\S\s*(\d*.\d*)\s*(\d*.\d*)"
+REGEX_VOL_LATENCY = r"\btotal_latency\s*\S\s*(\d*.\d*)\s*(\d*.\d*)"
 REGEX_DISK_READ_OPS = r"\bread_ops=(\d*.\d*)"
 REGEX_DISK_READ_SIZE = r"\bread_size=(\d*.\d*)"
 REGEX_DISK_READ_LATENCY = r"\bread_latency=(\d*.\d*)"
@@ -80,7 +80,7 @@ def collect_disk_stats():
     for _, dirs, _ in os.walk(DISK_ROOT):
 
         for disk in dirs:
-            with open(DISK_ROOT + disk + '/stats', 'r') as file_object:
+            with open(DISK_ROOT + disk + '/iostats', 'r') as file_object:
                 stats = file_object.read()
                 telegraf_output_line = "nvmesh,disk=" + disk
 
