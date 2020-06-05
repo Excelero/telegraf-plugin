@@ -26,9 +26,9 @@
 # and/or other materials provided with the distribution.
 #
 # Author:        Andreas Krause
-# Version:       in development
-# Maintainer:    Andreas Krause
-# Email:         andreas@excelero.com
+# Version:       0.2
+# Maintainer:    Yaniv Romem
+# Email:         yaniv@excelero.com
 
 import os
 import re
