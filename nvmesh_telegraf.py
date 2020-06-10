@@ -70,7 +70,6 @@ def collect_volume_stats():
             telegraf_output_line += ',size_in_bytes_write=' + size_in_bytes[0][1].strip()
 
           latency = re.findall(REGEX_VOL_LATENCY, iostats)
-          print latency
           if len(latency) == 1 and len(latency[0]) >= 2:
             telegraf_output_line += ',latency_read=' + latency[0][0].strip()
             telegraf_output_line += ',latency_write=' + latency[0][1].strip()
